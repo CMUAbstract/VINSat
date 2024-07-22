@@ -1,6 +1,7 @@
 import torch
 from BA.BA_utils import *
 
+
 def BA(iter, states, velocities, imu_meas, landmarks, landmarks_xyz, ii, time_idx, intrinsics, confidences, Sigma, V, lamda_init, poses_gt_eci, initialize=False):
 	states = states.double()
 	v = velocities.double()

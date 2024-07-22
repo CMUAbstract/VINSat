@@ -1,8 +1,9 @@
-import torch
 import numpy as np
+import torch
 from BA.utils import *
 from scipy.spatial import transform
-from torch_scatter import scatter_sum, scatter_mean
+from torch_scatter import scatter_mean, scatter_sum
+
 
 def proj(X, intrinsics):
     """ projection """

@@ -1,0 +1,12 @@
+train: 
+- python eedl.py -g 12R -i 2020 -f 2023 -s 150 -m 2000 -o sentinel_images_12R -se s2 --gdrive True
+- python eedl.py -g 12R -i 2015 -f 2017 -s 150 -m 2000 -o sentinel_images_12R -se s2 --gdrive True
+
+val: 
+- python eedl.py -g 12R -i 2018 -f 2019 -s 150 -m 200 -o sentinel_images_12R_val -se s2 --gdrive True
+
+train: python3 label_ld.py --landmark_path /home/giriman/CMU/rexlab/sat/VINSat/sim/landmark_csvs/12R_top_salient.csv --raster_dir_path /home/giriman/CMU/rexlab/sat/data/sentinel/12R/ --output_dir_path /home/giriman/CMU/rexlab/sat/data/sentinel/label_12R/ -v -c
+
+val: python3 label_ld.py --landmark_path /home/giriman/CMU/rexlab/sat/VINSat/sim/landmark_csvs/12R_top_salient.csv --raster_dir_path /home/giriman/CMU/rexlab/sat/data/sentinel/12R_val/ --output_dir_path /home/giriman/CMU/rexlab/sat/data/sentinel/label_12R_val/ -v -c
+
+python3 gdrive_utils.py --credentials-path /home/giriman/gcp/credentials/ee-cmu-vinsat-giria-46a18fe24bfb.json --output-dir /home/giriman/temp --folders-to-download sentinel_images_12R_val

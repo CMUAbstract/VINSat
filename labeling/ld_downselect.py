@@ -1,5 +1,7 @@
-import numpy as np
 import argparse
+
+import numpy as np
+
 
 def parse_args():
     """

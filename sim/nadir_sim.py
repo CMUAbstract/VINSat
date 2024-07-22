@@ -10,17 +10,20 @@ Functions:
 - plot_ground_track: Plot the ground track of the satellite.
 """
 
-from orbit_gen import get_random_orbit, get_Rz, get_nadir_attitude, get_nadir_attitude_vectors
+import csv
+import os
+
+import cv2
 import numpy as np
 from astropy.coordinates import EarthLocation
-from matplotlib import pyplot as plt
-from SatCam import SatCam, SatellitePose
 from getMGRS import getMGRS
-import cv2
-from ultralytics import YOLO
-import csv
+from matplotlib import pyplot as plt
+from orbit_gen import (get_nadir_attitude, get_nadir_attitude_vectors,
+                       get_random_orbit, get_Rz)
+from SatCam import SatCam, SatellitePose
 from tqdm.contrib.concurrent import process_map
-import os
+from ultralytics import YOLO
+
 
 def get_eci_orbit(tf=None):
     """
