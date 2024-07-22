@@ -1,0 +1,5 @@
+# dataset root dir
+path: /home/giriman/temp/
+train: label_12R/images
+val: label_12R_val/images
+nc: 500

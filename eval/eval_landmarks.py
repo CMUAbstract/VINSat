@@ -1,10 +1,11 @@
-import os
-import numpy as np
-from ultralytics import YOLO
 import argparse
-from tqdm.contrib.concurrent import process_map
-import torch
+import os
+
 import numpy as np
+import torch
+from tqdm.contrib.concurrent import process_map
+from ultralytics import YOLO
+
 
 def parse_args():
     """

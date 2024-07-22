@@ -1,11 +1,14 @@
 import argparse
 import os
-import numpy as np
-import rasterio as rio
-from tqdm.contrib.concurrent import process_map
-import pyproj
-from PIL import Image
+from pathlib import Path
+
 import cv2
+import numpy as np
+import pyproj
+import rasterio as rio
+from PIL import Image
+from tqdm.contrib.concurrent import process_map
+
 
 def parse_args():
     """
@@ -33,7 +36,10 @@ def get_landmarks(landmark_path):
     Returns:
     numpy.ndarray: The loaded landmarks.
     """
-    loaded_landmarks = np.load(landmark_path)
+    if landmark_path.endswith(".csv"):
+        loaded_landmarks = np.genfromtxt(landmark_path, delimiter=",", skip_header=1)
+    else:
+        loaded_landmarks = np.load(landmark_path)
     return loaded_landmarks
 
 def get_raster_paths(raster_dir_path):
@@ -61,8 +67,8 @@ def label_raster(raster_path):
         im = src.read().transpose(1, 2, 0)
         proj = pyproj.Proj(crs)
         cxs, cys = proj(landmarks[:, 0], landmarks[:, 1])
-        lefts, bots = proj(landmarks[:, 2], landmarks[:, 3])
-        rights, tops = proj(landmarks[:, 4], landmarks[:, 5])
+        lefts, tops = proj(landmarks[:, 2], landmarks[:, 3])
+        rights, bots = proj(landmarks[:, 4], landmarks[:, 5])
         cvs, cus = src.index(cxs, cys)
         tlv, tlu = src.index(lefts, tops)
         brv, bru = src.index(rights, bots)
@@ -91,13 +97,13 @@ def label_raster(raster_path):
         cus_norm = cus_idx / im_width
         out_labels = np.stack([classes, cus_norm, cvs_norm, ws_norm, hs_norm], axis=1)
         if not os.path.exists(output_path):
-            os.makedirs(output_path)
+            Path(output_path).mkdir(parents=True, exist_ok=True)
             print('made output directory')
         if not os.path.exists(os.path.join(output_path, 'labels')):
-            os.makedirs(os.path.join(output_path, 'labels'))
+            Path(os.path.join(output_path, "labels")).mkdir(parents=True, exist_ok=True)
             print('made labels directory')
         if not os.path.exists(os.path.join(output_path, 'images')):
-            os.makedirs(os.path.join(output_path, 'images'))
+            Path(os.path.join(output_path, "images")).mkdir(parents=True, exist_ok=True)
             print('made images directory')
         file_name = os.path.basename(raster_path).split('.')[0]
         with open(os.path.join(output_path, 'labels', file_name + '.txt'), 'w') as f:

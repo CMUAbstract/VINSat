@@ -1,7 +1,8 @@
-import numpy as np
 import ipdb
 import matplotlib.pyplot as plt
-        
+import numpy as np
+
+
 def time_to_error():
     time_for_1 = []
     time_for_2 = []
